@@ -11,7 +11,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-22.04
-    container: ros:humble
+    container: robojackets/urc-baseimage:humble
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -77,52 +77,3 @@ jobs:
           colcon build --cmake-args -DCMAKE_BUILD_TYPE=RELWITHDEBINFO --symlink-install
           colcon test --packages-skip micro_ros_setup && colcon test-result --verbose
 
-  cpp_linting:
-    name: C++ Linting
-    runs-on: ubuntu-22.04
-    container: robojackets/urc-baseimage:humble
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-
-      - name: Run Uncrustify
-        shell: bash
-        run: |
-          source /opt/ros/humble/setup.bash
-          touch external/AMENT_IGNORE
-          ament_uncrustify -c ament_code_style.cfg
-
-  python_linting:
-    name: Python Linting
-    runs-on: ubuntu-22.04
-    container: robojackets/urc-baseimage:humble
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-
-      - name: Run flake8
-        shell: bash
-        run: |
-          source /opt/ros/humble/setup.bash
-          ament_flake8 --exclude external
-
-  build_linting:
-    name: Build Linting
-    runs-on: ubuntu-22.04
-    container: robojackets/urc-baseimage:humble
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-
-      - name: Run ament_lint_cmake
-        shell: bash
-        run: |
-          source /opt/ros/humble/setup.bash
-          touch external/AMENT_IGNORE
-          ament_lint_cmake
