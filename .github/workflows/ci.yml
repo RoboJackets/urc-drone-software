@@ -11,7 +11,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-22.04
-    container: robojackets/urc-baseimage:humble
+    container: ros:humble
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
